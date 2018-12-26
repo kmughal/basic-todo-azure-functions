@@ -42,8 +42,6 @@ namespace FunctionApp1
             public string Description { get; set; }
         }
 
-        private static List<Todo> _todos = new List<Todo>();
-
         [FunctionName("Todo")]
         public static async Task<IActionResult> CreateTodo([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Todo")] HttpRequest req,
          [Queue("Todos", Connection = "AzureWebJobsStorage")]IAsyncCollector<Todo> todoQueue,
@@ -54,13 +52,15 @@ namespace FunctionApp1
             var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var data = JsonConvert.DeserializeObject<TodoCreateViewModel>(requestBody);
 
-            var item = new Todo(data.Name, data.Description);
-            item.Description = data.Description;
-            item.Name = data.Name;
+            var item = new Todo(data.Name, data.Description)
+            {
+                Description = data.Description,
+                Name = data.Name
+            };
+
             await todoTable.AddAsync(item);
             await todoQueue.AddAsync(item);
             return new OkObjectResult(item);
-
         }
 
         [FunctionName("GetTodo")]
@@ -113,7 +113,7 @@ namespace FunctionApp1
         public static async Task<IActionResult> GetAllTodos(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllTodos")] HttpRequest req,
             [Table("Todos", Connection = "AzureWebJobsStorage")] CloudTable cloudTable,
-           ILogger log
+                                                                 ILogger log
             )
         {
             log.LogInformation("Building query to get all todos");
