@@ -5,6 +5,14 @@
     <AzureFunctionsVersion>v2</AzureFunctionsVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="DurableFunctionSample\**" />
+    <EmbeddedResource Remove="DurableFunctionSample\**" />
+    <None Remove="DurableFunctionSample\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="WorkFlowSample.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="3.0.0" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.24" />
   </ItemGroup>
