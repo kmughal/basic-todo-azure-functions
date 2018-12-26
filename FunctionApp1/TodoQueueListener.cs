@@ -4,7 +4,7 @@ namespace FunctionApp1
     using Microsoft.Azure.WebJobs;
     using Microsoft.Extensions.Logging;
     using Microsoft.WindowsAzure.Storage.Blob;
-    using static FunctionApp1.Function1;
+    using static FunctionApp1.TodosFunctions;
 
     public static class TodoQueueListener
     {
